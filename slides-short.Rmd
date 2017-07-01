@@ -1,0 +1,113 @@
+---
+title: "Ensembles"
+author: "Chapman Siu"
+date: "July 2017"
+output: 
+  ioslides_presentation:
+    transition: 0
+    widescreen: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+#knitr::opts_chunk$set(eval = FALSE)
+```
+
+## Outline
+
+Cover three ensemble techniques:
+
+-  Bagging
+-  Boosting
+-  Stacking
+
+
+<!-- why do gbm's function this way? What about random forest? Why do we tend to prefer GBM over random forest? --> 
+
+
+
+## What will not be covered in detail
+
+Tree based models
+
+-   Why are they common in bagging (random forest), boosting (gbm)? 
+
+## Bagging and Boosting
+
+Bagging and boosting are very Similar! Boosting should be considered in the context bagging
+
+_Partially Correct History of Bagging and Boosting_
+
+1.  Bagging
+2.  Adaptive Boosting (Exponential Loss)
+3.  Adapative Boosting as an additive model for Exponential Loss
+4.  Generalising Gradient Descent for Boosting for all Loss Functions
+
+## Bagging
+
+Bagging is probably made famous by Random Forests
+
+**Loose Pseudo code**
+
+1.  Take random sample
+2.  Build model based on base model
+3.  Go to 1 until satisfied
+4.  Take average/mode as prediction
+
+
+## Boosting
+
+Imagine you're studying for an multiple choice exam with a very large question bank. 
+
+One person might study by first:
+
+1.  Working through question bank
+2.  Figure out which questions are more difficult and identify gaps in your knowledge
+3.  Address gaps
+
+Boosting is very similar!
+
+## Boosting
+
+**(Simplified) Adaptive Boosting**
+
+let $m$ be total no. obs
+Intially set all weights for observations in your training data to be $1/m$, 
+
+1.  Take a random sample based on the weight of each observation
+2.  Train the model
+3.  Retrospectively access which observations were correctly classified/incorrectly 
+    classified and re-adjust weights as needed
+4.  Go back to 2 until satisfied
+5.  Prediction is normally a weighted average
+
+## Boosting
+
+**In Adaboost**
+
+Given a base classifier $f$, we say $f_t$ is the base classifier for iteration $t$. 
+
+Let $D$ be the distribution of the observations
+
+*  The weights, $\alpha_t$ change each iteration, $t$ according to error, $\alpha_t := \frac{1}{2} \log(\frac{1-\epsilon_t}{\epsilon_t})$, where $\epsilon_t$ is the weighted error of $f_t$
+*  same weights $\alpha_t$ are used for weighted average prediction <!--(Platt's callibration)-->
+
+## Stack Generalisation
+
+The most simple linear super learners could be framed as a simple linear combination of models. Models need not be the same! <!--Let $g$ be a generalizer, representing a model learnt from a training set and $k$ be the $k$ model build where $k = 1, 2, ..., K$. In this setting $g_k$ need not be the same base model, and might represent a gradient boosting model, neural network, support vector machine or regression model. -->
+
+$$\sum_{k=1}^K \beta_k g_k(x)$$
+
+Bagging and Boosting can be viewed as special cases where:
+
+*  Bagging: all weights are equal (average of all models)
+*  Boosting: weighted average with respect to error
+
+
+<!--
+Another approach is to treat it as a regression problem to minimise. 
+
+$$\sum_{i=1}^N \mathcal{L}(\sum_{k=1}^K \beta_k g_k(x))$$
+-->
+<!-- examples --> 
+
